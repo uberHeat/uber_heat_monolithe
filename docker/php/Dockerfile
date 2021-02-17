@@ -1,6 +1,6 @@
 # docker/php/Dockerfile
 # Used to copy composer bin
-FROM composer:1.7.2 as composer
+FROM composer:latest as composer
 
 RUN composer self-update
 
