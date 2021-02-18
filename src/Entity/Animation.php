@@ -17,19 +17,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 /**
  * @ORM\Entity(repositoryClass=AnimationRepository::class)
  * @ORM\Table(name="`animation`")
- * @ApiResource(
- *   collectionOperations={
- *      "get",
- *      "post"={"security"="is_granted('ROLE_USER')"}
- *   },
- *   itemOperations={
- *     "get",
- *     "put"={"security"="is_granted('ROLE_USER')"},
- *     "patch"={"security"="is_granted('ROLE_USER')"},
- *     "delete"={"security"="is_granted('ROLE_USER')"}
- *   }
- * )
- * @ApiFilter(OrderFilter::class, properties={"id","createdAt","updatedAt"}, arguments={"orderParameterName"="order"})
  */
 class Animation
 {

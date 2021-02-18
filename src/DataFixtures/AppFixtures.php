@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Animation;
+use App\Entity\Configuration;
+use App\Entity\Product;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -27,7 +29,7 @@ class AppFixtures extends Fixture
     {
         $this->createDefaultUser($manager);
         $this->createUsers($manager, 10);
-
+        $this->createProduct($manager, random_int(5, 15));
         $manager->flush();
     }
 
@@ -39,21 +41,25 @@ class AppFixtures extends Fixture
                 ->setPassword($this->hashPassword($user, 'password'));
             $manager->persist($user);
 
-            $this->createAnimations($manager, $user, random_int(5, 15));
         }
     }
 
-    private function createAnimations(ObjectManager $manager, User $userAuthor, int $animationNumber): void
+    private function createProduct(ObjectManager $manager, int $productNumber): void
     {
-        for ($j = 0; $j < $animationNumber; ++$j) {
-            $Animation = (new Animation())->addUser($userAuthor)
-                ->addUser($this->defaultUser)
-                ->setTitle($this->faker->text(20))
-                ->setShortDescription($this->faker->text(100))
-                ->setLongDescription($this->faker->text(300));
+        for ($j = 0; $j < $productNumber; ++$j) {
+            $tempProduct = (new Product())
+                ->setName($this->faker->text(20))
+            ->addConfiguration($this->createConfiguration($manager));
 
-            $manager->persist($Animation);
+            $manager->persist($tempProduct);
         }
+    }
+
+    private function createConfiguration(ObjectManager $manager): Configuration
+    {
+            $tempConfiguration = (new Configuration());
+            $manager->persist($tempConfiguration);
+            return $tempConfiguration;
     }
 
     private function createDefaultUser(ObjectManager $manager): void
