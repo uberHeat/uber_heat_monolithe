@@ -1,10 +1,10 @@
-<?
+<?php
+
+declare(strict_types=1);
 
 namespace App\Dto;
 
-abstract class DimensionDto()
+abstract class DimensionDto
 {
-    private $deep;
-
-    public abstract function getM2();
+    public string $deep;
 }

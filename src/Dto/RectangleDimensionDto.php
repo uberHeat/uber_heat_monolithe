@@ -1,13 +1,10 @@
 <?
+declare(strict_types=1);
 
 namespace App\Dto;
 
-final class RectangleDimensionDto extends DimensionDto()
+final class RectangleDimensionDto extends DimensionDto
 {
-    private $height;
-    private $width;
-
-    public function getM2(){
-        return $height * $width;
-    }
+    public string $height;
+    public string $width;
 }

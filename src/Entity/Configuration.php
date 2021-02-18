@@ -1,15 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\ConfigurationRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Dto\ConfigurationInput;
+use App\Dto\ConfigurationOutput;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *         "create"={
+ *             "method"="POST",
+ *             "input"=ConfigurationInput::class
+ *         }
+ *     },
+ * )
  */
 class Configuration
 {
@@ -19,17 +30,17 @@ class Configuration
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="configurations")
      */
-    private Product $product;
+    private ?Product $product;
 
     /**
-     * @ORM\OneToOne(targetEntity=CircularDim::class, mappedBy="Configuration", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=CircularDim::class, mappedBy="configuration", cascade={"persist", "remove"})
      */
-    private $circularDim;
+    private ?CircularDim $circularDim;
 
     /**
-     * @ORM\OneToOne(targetEntity=RectangleDim::class, mappedBy="Configuration", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=RectangleDim::class, mappedBy="configuration", cascade={"persist", "remove"})
      */
-    private $rectangleDim;
+    private ?RectangleDim $rectangleDim;
 
     public function __construct()
     {

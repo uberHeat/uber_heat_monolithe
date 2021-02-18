@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\CircularDimRepository;
@@ -16,17 +18,17 @@ class CircularDim
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $deep;
+    private string $deep;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $diameter;
+    private string $diameter;
 
     /**
      * @ORM\OneToOne(targetEntity=Configuration::class, inversedBy="circularDim", cascade={"persist", "remove"})
      */
-    private $Configuration;
+    private ?Configuration $configuration;
 
     public function getDeep(): ?string
     {
@@ -54,12 +56,12 @@ class CircularDim
 
     public function getConfiguration(): ?Configuration
     {
-        return $this->Configuration;
+        return $this->configuration;
     }
 
-    public function setConfiguration(?Configuration $Configuration): self
+    public function setConfiguration(?Configuration $configuration): self
     {
-        $this->Configuration = $Configuration;
+        $this->configuration = $configuration;
 
         return $this;
     }

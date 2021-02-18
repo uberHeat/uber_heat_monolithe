@@ -1,12 +1,9 @@
 <?
+declare(strict_types=1);
 
 namespace App\Dto;
 
-final class CircularDimensionDto extends DimensionDto()
+final class CircularDimensionDto extends DimensionDto
 {
-    private $diameter;
-
-    public function getM2(){
-        return 3.14 * ((diameter/2)^2);
-    }
+    public string $diameter;
 }
