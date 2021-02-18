@@ -16,24 +16,33 @@ class RectangleDim
     use Timestamps;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private string $deep;
+    private ?string $deep;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private string $height;
+    private ?string $height;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private string $width;
+    private ?string $width;
 
     /**
      * @ORM\OneToOne(targetEntity=Configuration::class, inversedBy="rectangleDim", cascade={"persist", "remove"})
      */
     private ?Configuration $configuration;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->configuration = null;
+        $this->width = null;
+        $this->deep = null;
+        $this->height = null;
+    }
 
     public function getDeep(): ?string
     {

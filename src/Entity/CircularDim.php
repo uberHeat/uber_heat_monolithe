@@ -16,19 +16,26 @@ class CircularDim
     use Timestamps;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private string $deep;
+    private ?string $deep;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private string $diameter;
+    private ?string $diameter;
 
     /**
      * @ORM\OneToOne(targetEntity=Configuration::class, inversedBy="circularDim", cascade={"persist", "remove"})
      */
     private ?Configuration $configuration;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->deep = null;
+        $this->diameter = null;
+    }
 
     public function getDeep(): ?string
     {

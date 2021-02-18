@@ -35,16 +35,18 @@ class Configuration
     /**
      * @ORM\OneToOne(targetEntity=CircularDim::class, mappedBy="configuration", cascade={"persist", "remove"})
      */
-    private ?CircularDim $circularDim;
+    public ?CircularDim $circularDim;
 
     /**
      * @ORM\OneToOne(targetEntity=RectangleDim::class, mappedBy="configuration", cascade={"persist", "remove"})
      */
-    private ?RectangleDim $rectangleDim;
+    public ?RectangleDim $rectangleDim;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->rectangleDim = new RectangleDim();
+        $this->circularDim = new CircularDim();
     }
 
     public function getId(): ?int

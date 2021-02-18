@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\DataTransformer;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
+use ApiPlatform\Core\Serializer\AbstractItemNormalizer;
 use App\Entity\Configuration;
 use App\Entity\RectangleDim;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class ConfigurationInputDataTransformer implements DataTransformerInterface
 {
@@ -16,20 +18,13 @@ final class ConfigurationInputDataTransformer implements DataTransformerInterfac
     {
         $tempConfig = new Configuration();
 
+
         if($data->circularDim !== null )
         {
             $tempConfig->setCircularDim($data->circularDim);
         }elseif ($data->rectangleDim !== null){
-            $tempRectangularDim = new RectangleDim();
-            $tempRectangularDim->setDeep($data->rectangleDim->deep)
-                ->setWidth($data->rectangleDim->width)
-                ->setHeight($data->rectangleDim->height);
-
-            var_dump($tempConfig);
-
-            $tempConfig->setRectangleDim($tempRectangularDim);
+            $tempConfig->setRectangleDim($data->rectangleDim);
         }
-
 
         return $tempConfig;
     }
