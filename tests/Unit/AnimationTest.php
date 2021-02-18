@@ -3,18 +3,19 @@
 namespace App\Tests\Unit;
 
 use App\Entity\Animation;
+use App\Entity\Program;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class AnimationTest extends TestCase
 {
-    private Animation $Animation;
+    private Animation $animation;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->Animation = new Animation();
+        $this->animation = new Animation();
     }
 
     /**
@@ -24,11 +25,10 @@ class AnimationTest extends TestCase
     public function testGetTitle(): void
     {
         $value = 'My title';
-        $response = $this->Animation->setTitle($value);
+        $response = $this->animation->setTitle($value);
 
         self::assertInstanceOf(Animation::class, $response);
-        self::assertEquals($value, $this->Animation->getTitle());
-        self::assertEquals($value, $this->Animation->getTitle());
+        self::assertEquals($value, $this->animation->getTitle());
     }
 
     /**
@@ -38,11 +38,11 @@ class AnimationTest extends TestCase
     public function testGetShortDescription(): void
     {
         $value = 'My short description here';
-        $response = $this->Animation->setShortDescription($value);
+        $response = $this->animation->setShortDescription($value);
 
         self::assertInstanceOf(Animation::class, $response);
-        self::assertEquals($value, $this->Animation->getShortDescription());
-        self::assertEquals($value, $this->Animation->getShortDescription());
+        self::assertEquals($value, $this->animation->getShortDescription());
+        self::assertEquals($value, $this->animation->getShortDescription());
     }
 
     /**
@@ -52,11 +52,11 @@ class AnimationTest extends TestCase
     public function testGetLongDescription(): void
     {
         $value = 'My long description here';
-        $response = $this->Animation->setLongDescription($value);
+        $response = $this->animation->setLongDescription($value);
 
         self::assertInstanceOf(Animation::class, $response);
-        self::assertEquals($value, $this->Animation->getLongDescription());
-        self::assertEquals($value, $this->Animation->getLongDescription());
+        self::assertEquals($value, $this->animation->getLongDescription());
+        self::assertEquals($value, $this->animation->getLongDescription());
     }
 
     /**
@@ -67,15 +67,15 @@ class AnimationTest extends TestCase
     {
         $value = new User();
 
-        $response = $this->Animation->addUser($value);
+        $response = $this->animation->addUser($value);
 
         self::assertInstanceOf(Animation::class, $response);
-        self::assertCount(1, $this->Animation->getusers());
-        self::assertTrue($this->Animation->getusers()->contains($value));
+        self::assertCount(1, $this->animation->getusers());
+        self::assertTrue($this->animation->getusers()->contains($value));
 
-        $response = $this->Animation->removeUser($value);
+        $response = $this->animation->removeUser($value);
         self::assertInstanceOf(Animation::class, $response);
-        self::assertCount(0, $this->Animation->getusers());
-        self::assertFalse($this->Animation->getusers()->contains($value));
+        self::assertCount(0, $this->animation->getusers());
+        self::assertFalse($this->animation->getusers()->contains($value));
     }
 }

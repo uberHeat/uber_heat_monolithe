@@ -13,7 +13,7 @@ abstract class AbstractEndPoint extends WebTestCase
     use SymfonyComponent;
     protected array $serverInformation = ['ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json'];
     protected string $tokenNotFound = 'JWT Token not found';
-    protected string $accessDenied = 'Access Denied.';
+    protected string $accessDenied = 'Désoler, mais vous n\'avez pas les autorisations nécessaires pour effectuer cette action.';
     protected string $loginPayload = '{"username": "%s", "password": "%s"}';
 
     public function getResponseFromRequest(
@@ -22,13 +22,13 @@ abstract class AbstractEndPoint extends WebTestCase
         string $payload = '',
         array $parameters = [],
         bool $withAuthentication = false,
-        array $loginInformation = []
+        array $loginInformation = ['email' => AppFixtures::DEFAULT_USER['email'], 'password' => AppFixtures::DEFAULT_USER['password']]
     ): Response {
         $client = $this->createAuthenticationClient($withAuthentication, $loginInformation);
 
         $client->request(
             $method,
-            $uri,
+            $uri.'?log=false',
             $parameters,
             [],
             $this->serverInformation,
@@ -44,25 +44,14 @@ abstract class AbstractEndPoint extends WebTestCase
         if (!$withAuthentication) {
             return self::$kernelBrowser;
         }
-        if ([] !== $loginInformation) {
-            self::$kernelBrowser->request(
-                Request::METHOD_POST,
-                '/api/login',
-                [],
-                [],
-                $this->serverInformation,
-                sprintf($this->loginPayload, $loginInformation['email'], $loginInformation['password'])
-            );
-        } else {
-            self::$kernelBrowser->request(
-                Request::METHOD_POST,
-                '/api/login',
-                [],
-                [],
-                $this->serverInformation,
-                sprintf($this->loginPayload, AppFixtures::DEFAULT_USER['email'], AppFixtures::DEFAULT_USER['password'])
-            );
-        }
+        self::$kernelBrowser->request(
+        Request::METHOD_POST,
+        '/api/login',
+            [],
+            [],
+            $this->serverInformation,
+            sprintf($this->loginPayload, $loginInformation['email'], $loginInformation['password'])
+        );
 
         $data = json_decode(self::$kernelBrowser->getResponse()->getContent(), true);
         self::$kernelBrowser->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));

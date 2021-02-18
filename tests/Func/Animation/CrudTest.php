@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Func\Animation;
 
 /* Trait importation */
-use App\Tests\Func\Animation\Utils\AnimationAbstract;
+
+use App\Tests\Func\AbstractEndPoint;
 use App\Tests\Func\Animation\Utils\SetUpAnimation;
 use App\Tests\Func\Animation\Utils\TearDownAnimation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CrudTest extends AnimationAbstract
+class CrudTest extends AbstractEndPoint
 {
     use SetUpAnimation;
     use TearDownAnimation;
@@ -45,9 +46,10 @@ class CrudTest extends AnimationAbstract
         $response = $this->getResponseFromRequest(
             Request::METHOD_POST,
             '/api/animations',
-            $this->getRandomPayload(),
+            $this->randomPayload,
             [],
-            true
+            true,
+            $this->authorLoginCredential
         );
         $responseContent = $response->getContent();
         $responseDecoded = json_decode($responseContent, true);
@@ -57,7 +59,7 @@ class CrudTest extends AnimationAbstract
         self::assertNotEmpty($responseDecoded);
 
         /* Delete the Animation previously created */
-        $this->deleteOneAnimation($responseDecoded['id']);
+        $this->animationManager->deleteOne($responseDecoded['id']);
     }
 
     /**
@@ -93,10 +95,10 @@ class CrudTest extends AnimationAbstract
         $response = $this->getResponseFromRequest(
             Request::METHOD_PATCH,
             '/api/animations/'.$this->animation->getId(),
-            $this->getRandomPayload(),
+            $this->randomPayload,
             [],
             true,
-//            $this->getLoginInformation($this->Animation->getEmail(), $this->Animation->getPassword())
+            $this->authorLoginCredential
         );
 
         $responseContent = $response->getContent();
@@ -117,10 +119,10 @@ class CrudTest extends AnimationAbstract
         $response = $this->getResponseFromRequest(
             Request::METHOD_PUT,
             '/api/animations/'.$this->animation->getId(),
-            $this->getRandomPayload(),
+            $this->randomPayload,
             [],
             true,
-//            $this->getLoginInformation($this->Animation->getEmail(), $this->Animation->getPassword())
+            $this->authorLoginCredential
         );
 
         $responseContent = $response->getContent();
@@ -144,7 +146,7 @@ class CrudTest extends AnimationAbstract
             '',
             [],
             true,
-//            $this->getLoginInformation($this->Animation->getEmail(), $this->Animation->getPassword())
+            $this->authorLoginCredential
         );
         self::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }

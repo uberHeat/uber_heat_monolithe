@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit;
 
 use App\Entity\Animation;
@@ -79,7 +81,7 @@ class UserTest extends TestCase
      */
     public function testAddAndDeleteAnAnimationsToAUser(): void
     {
-        $value = new Animation();
+        $value = $this->createFakeAnimation();
 
         $response = $this->user->addAnimation($value);
 
@@ -93,10 +95,6 @@ class UserTest extends TestCase
         self::assertFalse($this->user->getAnimations()->contains($value));
     }
 
-    /**
-     * @group unit
-     * @group unitUser
-     */
     private function createFakeAnimation(): Animation
     {
         $faker = Factory::create();

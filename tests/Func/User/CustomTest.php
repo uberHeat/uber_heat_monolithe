@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Func\User;
 
+use App\Tests\Func\AbstractEndPoint;
 use App\Tests\Func\User\Utils\SetUpUser;
 use App\Tests\Func\User\Utils\TearDownUser;
-use App\Tests\Func\User\Utils\UserAbstract;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CustomTest extends UserAbstract
+class CustomTest extends AbstractEndPoint
 {
     use SetUpUser;
     use TearDownUser;
@@ -28,7 +28,7 @@ class CustomTest extends UserAbstract
             '',
             [],
             true,
-            $this->getLoginInformation($this->user->getEmail(), $this->user->getPassword())
+            $this->userLoginCredential
         );
         $responseContent = $response->getContent();
         $responseDecoded = json_decode($responseContent, true);

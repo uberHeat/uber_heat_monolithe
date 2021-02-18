@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\User\UserCurrent;
-use App\Controller\User\UserDismiss;
-use App\Controller\User\UserGrant;
+use App\Controller\User\UserRoleUpdater;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,13 +20,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -35,7 +32,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      "post"={
  *        "denormalization_context"={"groups"={"userWrite"}}
  *      },
-       "current_user"={
+"current_user"={
  *       "normalization_context"={"groups"={"userDetailRead", "alwaysDisplay"}},
  *       "method"="GET",
  *       "path"="/custom/users/current",
@@ -48,26 +45,26 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      },
  *     "put"={
  *        "denormalization_context"={"groups"={"userWrite"}},
- *        "security"="is_granted('ROLE_ADMIN') or object == user"
+ *        "security"="is_granted('ROLE_ADMIN') or object == user",
+ *        "security_message"="ERROR_CODE % 401 % Désoler, mais vous n'avez pas les autorisations nécessaires pour effectuer cette action."
  *      },
  *     "patch"={
  *        "denormalization_context"={"groups"={"userWrite"}},
- *        "security"="is_granted('ROLE_ADMIN') or object == user"
+ *        "security"="is_granted('ROLE_ADMIN') or object == user",
+ *        "security_message"="ERROR_CODE % 401 % Désoler, mais vous n'avez pas les autorisations nécessaires pour effectuer cette action."
  *      },
- *     "delete"={"security"="is_granted('ROLE_ADMIN') or object == user"},
- *     "grant"={
- *       "normalization_context"={"groups"={"userRead", "alwaysDisplay"}},
- *       "method"="GET",
- *       "path"="/custom/users/{id}/grant",
- *       "controller"=UserGrant::class
+ *     "delete"={
+ *        "security"="is_granted('ROLE_ADMIN') or object == user",
+ *        "security_message"="ERROR_CODE % 401 % Désoler, mais vous n'avez pas les autorisations nécessaires pour effectuer cette action.",
+ *     },
+ *     "userRoleUpdater"={
+ *       "denormalization_context"={"groups"={"roleUpdate"}},
+ *       "method"="patch",
+ *       "path"="/custom/users/{id}/updateRole",
+ *       "controller"=UserRoleUpdater::class,
+ *       "security"="is_granted('ROLE_ADMIN')",
+ *       "security_message"="ERROR_CODE % 401 % Désoler, mais vous n'avez pas les autorisations nécessaires pour effectuer cette action."
  *    },
- *     "dismiss"={
- *       "normalization_context"={"groups"={"userRead", "alwaysDisplay"}},
- *       "method"="GET",
- *       "path"="/custom/users/{id}/dismiss",
- *       "controller"=UserDismiss::class,
- *       "security"="is_granted('ROLE_ADMIN')"
- *     }
  *   }
  * )
  * @UniqueEntity("email", message="This email is already used")
@@ -91,7 +88,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"userRead","userDetailRead"})
+     * @Groups({"userRead","userDetailRead", "roleUpdate"})
      */
     private array $roles = [];
 
@@ -112,6 +109,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->animations = new ArrayCollection();
+        $this->setRoles(['ROLE_REDACTOR']);
 
         $this->createdAt = new \DateTimeImmutable();
     }

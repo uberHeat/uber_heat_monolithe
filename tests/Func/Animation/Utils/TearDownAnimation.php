@@ -9,6 +9,7 @@ trait TearDownAnimation
     /* This function tearDown interact directly the database via doctrine */
     protected function tearDown(): void
     {
-        $this->deleteOneAnimation($this->animation->getId());
+        $this->animationManager->deleteOne($this->animation->getId());
+        $this->userManager->deleteOne($this->author->getId());
     }
 }

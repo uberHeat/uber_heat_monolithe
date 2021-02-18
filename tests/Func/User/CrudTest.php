@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Func\User;
 
 /* Trait importation */
+
+use App\Tests\Func\AbstractEndPoint;
 use App\Tests\Func\User\Utils\SetUpUser;
 use App\Tests\Func\User\Utils\TearDownUser;
-use App\Tests\Func\User\Utils\UserAbstract;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CrudTest extends UserAbstract
+class CrudTest extends AbstractEndPoint
 {
     use SetUpUser;
     use TearDownUser;
@@ -45,7 +46,7 @@ class CrudTest extends UserAbstract
         $response = $this->getResponseFromRequest(
             Request::METHOD_POST,
             '/api/users',
-            $this->getRandomPayload()
+            $this->userManager->getRandomPayload()
         );
         $responseContent = $response->getContent();
         $responseDecoded = json_decode($responseContent, true);
@@ -55,7 +56,7 @@ class CrudTest extends UserAbstract
         self::assertNotEmpty($responseDecoded);
 
         /* Delete the user previously created */
-        $this->deleteOneUser($responseDecoded['id']);
+        $this->userManager->deleteOne($responseDecoded['id']);
     }
 
     /**
@@ -71,7 +72,7 @@ class CrudTest extends UserAbstract
             '',
             [],
             true,
-            $this->getLoginInformation($this->user->getEmail(), $this->user->getPassword())
+            $this->userLoginCredential
         );
 
         $responseContent = $response->getContent();
@@ -89,15 +90,15 @@ class CrudTest extends UserAbstract
      */
     public function testPatchUser(): void
     {
-        $newRandomEmail = $this->getRandomEmail();
-        $jsonPayload = $this->getCustomPayload($newRandomEmail, $this->user->getEmail());
+        $newRandomEmail = $this->userManager->getRandomEmail();
+        $jsonPayload = $this->userManager->getCustomPayload($newRandomEmail, $this->user->getEmail());
         $response = $this->getResponseFromRequest(
             Request::METHOD_PATCH,
             '/api/users/'.$this->user->getId(),
             $jsonPayload,
             [],
             true,
-            $this->getLoginInformation($this->user->getEmail(), $this->user->getPassword())
+            $this->userLoginCredential
         );
 
         $responseContent = $response->getContent();
@@ -116,12 +117,11 @@ class CrudTest extends UserAbstract
      * @group func
      * @group funcUser
      * @group crudUser
-     * @group justHim
      */
     public function testPutUser(): void
     {
-        $newRandomEmail = $this->getRandomEmail();
-        $jsonPayload = $this->getCustomPayload($newRandomEmail, $this->user->getEmail());
+        $newRandomEmail = $this->userManager->getRandomEmail();
+        $jsonPayload = $this->userManager->getCustomPayload($newRandomEmail, $this->user->getEmail());
 
         $response = $this->getResponseFromRequest(
             Request::METHOD_PUT,
@@ -129,7 +129,7 @@ class CrudTest extends UserAbstract
             $jsonPayload,
             [],
             true,
-            $this->getLoginInformation($this->user->getEmail(), $this->user->getPassword())
+            $this->userLoginCredential
         );
 
         $responseContent = $response->getContent();
@@ -157,7 +157,7 @@ class CrudTest extends UserAbstract
             '',
             [],
             true,
-            $this->getLoginInformation($this->user->getEmail(), $this->user->getPassword())
+            $this->userLoginCredential
         );
         self::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }

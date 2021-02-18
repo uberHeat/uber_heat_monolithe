@@ -9,6 +9,6 @@ trait TearDownUser
     /* This function tearDown interact directly the database via doctrine */
     protected function tearDown(): void
     {
-        $this->deleteOneUser($this->user->getId());
+        $this->userManager->deleteOne($this->user->getId());
     }
 }
