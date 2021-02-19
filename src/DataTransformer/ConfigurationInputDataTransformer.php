@@ -1,13 +1,11 @@
-<?
+<?php
+
 declare(strict_types=1);
 
 namespace App\DataTransformer;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
-use ApiPlatform\Core\Serializer\AbstractItemNormalizer;
 use App\Entity\Configuration;
-use App\Entity\RectangleDim;
-use Doctrine\ORM\EntityManagerInterface;
 
 final class ConfigurationInputDataTransformer implements DataTransformerInterface
 {
@@ -31,7 +29,7 @@ final class ConfigurationInputDataTransformer implements DataTransformerInterfac
         // in the case of an input, the value given here is an array (the JSON decoded).
         // if it's a book we transformed the data already
         if ($data instanceof Configuration) {
-          return false;
+            return false;
         }
 
         return Configuration::class === $to && null !== ($context['input']['class'] ?? null);

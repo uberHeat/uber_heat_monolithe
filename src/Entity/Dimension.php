@@ -29,7 +29,8 @@ abstract class Dimension
      */
     protected ?float $deep;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->createdAt = new \DateTimeImmutable();
         $this->config = null;
         $this->deep = null;

@@ -3,15 +3,12 @@
 namespace App\Serializer;
 
 use App\Entity\Dimension;
-use App\Entity\CircularDim;
-use App\Entity\RectangleDim;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class DimensionDenormalizer implements DenormalizerInterface
 {
     private $denormalizer;
-    const ACCEPTED_CLASS = ["CircularDim", "RectangleDim"];
-
+    const ACCEPTED_CLASS = ['CircularDim', 'RectangleDim'];
 
     public function __construct(DenormalizerInterface $denormalizer)
     {
@@ -20,14 +17,13 @@ final class DimensionDenormalizer implements DenormalizerInterface
 
     public function denormalize($data, string $class, string $format = null, array $context = [])
     {
-        if ($class === Dimension::class) {
-
+        if (Dimension::class === $class) {
             $wantedClass = ucfirst($data['@type']);
 
-            if(!in_array($wantedClass , self::ACCEPTED_CLASS)){
-                throw new Exception('Accepted class type: ' . implode(" , ", self::ACCEPTED_CLASS));
+            if (!in_array($wantedClass, self::ACCEPTED_CLASS)) {
+                throw new Exception('Accepted class type: '.implode(' , ', self::ACCEPTED_CLASS));
             }
-            $class = 'App\Entity\\' . $wantedClass ;
+            $class = 'App\Entity\\'.$wantedClass;
             unset($data['@type']);
             $context['resource_class'] = $class;
         }
@@ -37,6 +33,6 @@ final class DimensionDenormalizer implements DenormalizerInterface
 
     public function supportsDenormalization($data, $type, string $format = null)
     {
-        return $type === Dimension::class; // we only want to process our abstract entity.
+        return Dimension::class === $type; // we only want to process our abstract entity.
     }
 }

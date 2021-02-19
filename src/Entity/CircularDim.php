@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\CircularDimRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\CircularDimRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -18,7 +18,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class CircularDim extends Dimension
 {
-
     /**
      * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      * @Groups({"configurationWrite"})
@@ -45,6 +44,6 @@ class CircularDim extends Dimension
 
     public function calculM2(): ?float
     {
-        return ((($this->diameter / 2 )^2) * 3.14);
+        return (($this->diameter / 2) ^ 2) * 3.14;
     }
 }

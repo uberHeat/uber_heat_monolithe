@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\RectangleDimRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\RectangleDimRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -18,7 +18,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class RectangleDim extends Dimension
 {
-
     /**
      * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      * @Groups({"configurationWrite"})
@@ -36,7 +35,6 @@ class RectangleDim extends Dimension
         parent::__construct();
         $this->height = null;
         $this->width = null;
-
     }
 
     public function getM2(): ?float

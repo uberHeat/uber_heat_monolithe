@@ -6,7 +6,6 @@ namespace App\Events;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Services\ResourceUpdaterInterface;
-use App\Services\UpdaterDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

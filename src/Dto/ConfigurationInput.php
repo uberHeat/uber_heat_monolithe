@@ -1,4 +1,4 @@
-<?
+<?php
 
 declare(strict_types=1);
 
@@ -13,6 +13,4 @@ final class ConfigurationInput
      * @Groups({"configurationWrite"})
      */
     public ?Dimension $dimension = null;
-
-
 }

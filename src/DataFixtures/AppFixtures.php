@@ -39,7 +39,6 @@ class AppFixtures extends Fixture
             $user->setEmail($this->faker->email)
                 ->setPassword($this->hashPassword($user, 'password'));
             $manager->persist($user);
-
         }
     }
 
@@ -56,9 +55,10 @@ class AppFixtures extends Fixture
 
     private function createConfiguration(ObjectManager $manager): Configuration
     {
-            $tempConfiguration = (new Configuration());
-            $manager->persist($tempConfiguration);
-            return $tempConfiguration;
+        $tempConfiguration = (new Configuration());
+        $manager->persist($tempConfiguration);
+
+        return $tempConfiguration;
     }
 
     private function createDefaultUser(ObjectManager $manager): void

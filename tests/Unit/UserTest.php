@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Unit;
 
 use App\Entity\User;
-use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
@@ -58,5 +57,4 @@ class UserTest extends TestCase
         self::assertInstanceOf(User::class, $response);
         self::assertStringContainsString($value, $this->user->getPassword());
     }
-
 }

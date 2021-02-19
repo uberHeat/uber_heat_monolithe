@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\NoiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-
-
 
 /**
  * @ORM\Entity(repositoryClass=NoiseRepository::class)
@@ -36,7 +34,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Noise
 {
-
     use ResourceId;
     use Timestamps;
 

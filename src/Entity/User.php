@@ -12,8 +12,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\User\UserCurrent;
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      "post"={
  *        "denormalization_context"={"groups"={"userWrite"}}
  *      },
-*        "current_user"={
+ *        "current_user"={
  *       "normalization_context"={"groups"={"userDetailRead", "alwaysDisplay"}},
  *       "method"="GET",
  *       "path"="/custom/users/current",
@@ -98,7 +96,6 @@ class User implements UserInterface
      * @Assert\NotBlank(message="password required")
      */
     private string $password;
-
 
     public function __construct()
     {
@@ -179,5 +176,4 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-
 }
