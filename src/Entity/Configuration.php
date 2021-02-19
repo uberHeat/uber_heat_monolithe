@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\ConfigurationRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Dto\ConfigurationInput;
@@ -47,11 +48,17 @@ class Configuration
      */
     private Type $type;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Noise::class, mappedBy="configurations")
+     */
+    private Collection $noises;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->rectangleDim = new RectangleDim();
         $this->circularDim = new CircularDim();
+        $this->noises = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,9 +127,36 @@ class Configuration
         return $this->type;
     }
 
-    public function setType(?Type $type): self
+    public function setType(Type $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Noise[]
+     */
+    public function getNoises(): Collection
+    {
+        return $this->noises;
+    }
+
+    public function addNoise(Noise $noise): self
+    {
+        if (!$this->noises->contains($noise)) {
+            $this->noises[] = $noise;
+            $noise->addConfiguration($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNoise(Noise $noise): self
+    {
+        if ($this->noises->removeElement($noise)) {
+            $noise->removeConfiguration($this);
+        }
 
         return $this;
     }
