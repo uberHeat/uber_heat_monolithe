@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      "post"={
  *        "denormalization_context"={"groups"={"userWrite"}}
  *      },
-"current_user"={
+*        "current_user"={
  *       "normalization_context"={"groups"={"userDetailRead", "alwaysDisplay"}},
  *       "method"="GET",
  *       "path"="/custom/users/current",
@@ -99,15 +99,9 @@ class User implements UserInterface
      */
     private string $password;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Animation::class, mappedBy="users", cascade={"persist"})
-     * @Groups({"userRead", "userDetailRead"})
-     */
-    private Collection $animations;
 
     public function __construct()
     {
-        $this->animations = new ArrayCollection();
         $this->setRoles(['ROLE_REDACTOR']);
 
         $this->createdAt = new \DateTimeImmutable();
@@ -186,30 +180,4 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection|Animation[]
-     */
-    public function getAnimations(): Collection
-    {
-        return $this->animations;
-    }
-
-    public function addAnimation(Animation $animation): self
-    {
-        if (!$this->animations->contains($animation)) {
-            $this->animations[] = $animation;
-            $animation->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAnimation(Animation $animation): self
-    {
-        if ($this->animations->removeElement($animation)) {
-            $animation->removeUser($this);
-        }
-
-        return $this;
-    }
 }

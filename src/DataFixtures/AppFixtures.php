@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\Animation;
 use App\Entity\Configuration;
 use App\Entity\Product;
 use App\Entity\User;

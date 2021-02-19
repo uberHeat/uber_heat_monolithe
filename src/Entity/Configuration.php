@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Dto\ConfigurationInput;
 use App\Dto\ConfigurationOutput;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
@@ -17,7 +18,8 @@ use App\Dto\ConfigurationOutput;
  *     collectionOperations={
  *         "create"={
  *             "method"="POST",
- *             "input"=ConfigurationInput::class
+ *             "input"=ConfigurationInput::class,
+ *             "denormalization_context"={"groups"={"configurationWrite"}}
  *         }
  *     },
  * )
@@ -33,14 +35,10 @@ class Configuration
     private ?Product $product;
 
     /**
-     * @ORM\OneToOne(targetEntity=CircularDim::class, mappedBy="configuration", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Dimension", mappedBy="config")
+     * @Groups({"configurationWrite"})
      */
-    public ?CircularDim $circularDim;
-
-    /**
-     * @ORM\OneToOne(targetEntity=RectangleDim::class, mappedBy="configuration", cascade={"persist", "remove"})
-     */
-    public ?RectangleDim $rectangleDim;
+    private Dimension $dimension;
 
     public function __construct()
     {
@@ -66,47 +64,16 @@ class Configuration
         return $this;
     }
 
-    public function getCircularDim(): ?CircularDim
+    public function getDimension(): ?Dimension
     {
-        return $this->circularDim;
+        return $this->dimension;
     }
 
-    public function setCircularDim(?CircularDim $circularDim): self
+    public function setDimension(?Dimension $dimension): self
     {
-        // unset the owning side of the relation if necessary
-        if ($circularDim === null && $this->circularDim !== null) {
-            $this->circularDim->setConfiguration(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($circularDim !== null && $circularDim->getConfiguration() !== $this) {
-            $circularDim->setConfiguration($this);
-        }
-
-        $this->circularDim = $circularDim;
+        $this->dimension = $dimension;
 
         return $this;
     }
 
-    public function getRectangleDim(): ?RectangleDim
-    {
-        return $this->rectangleDim;
-    }
-
-    public function setRectangleDim(?RectangleDim $rectangleDim): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($rectangleDim === null && $this->rectangleDim !== null) {
-            $this->rectangleDim->setConfiguration(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($rectangleDim !== null && $rectangleDim->getConfiguration() !== $this) {
-            $rectangleDim->setConfiguration($this);
-        }
-
-        $this->rectangleDim = $rectangleDim;
-
-        return $this;
-    }
 }

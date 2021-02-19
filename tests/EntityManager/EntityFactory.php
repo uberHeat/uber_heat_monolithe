@@ -2,7 +2,6 @@
 
 namespace App\Tests\EntityManager;
 
-use App\Tests\EntityManager\Animation\AnimationManager;
 use App\Tests\EntityManager\User\UserManager;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
@@ -23,9 +22,6 @@ class EntityFactory
         switch ($type) {
             case 'user':
                 $response = new UserManager($this->objectManager, $this->passwordEncoder);
-                break;
-            case 'animation':
-                $response = new AnimationManager($this->objectManager);
                 break;
             default:
                 $response = null;

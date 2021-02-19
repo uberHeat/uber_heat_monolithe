@@ -2,12 +2,9 @@
 
 namespace App\Dto;
 
-
-use App\Entity\CircularDim;
-use App\Entity\RectangleDim;
+use App\Entity\Dimension;
 
 final class ConfigurationInput
 {
-    public ?CircularDim $circularDim = null;
-    public ?RectangleDim $rectangleDim = null;
+    public ?Dimension $dimension = null;
 }

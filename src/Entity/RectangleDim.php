@@ -6,34 +6,25 @@ namespace App\Entity;
 
 use App\Repository\RectangleDimRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=RectangleDimRepository::class)
  */
-class RectangleDim
+class RectangleDim extends Dimension
 {
-    use ResourceId;
-    use Timestamps;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
+     * @Groups({"configurationWrite"})
      */
-    private ?string $deep;
+    private float $height;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
+     * @Groups({"configurationWrite"})
      */
-    private ?string $height;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private ?string $width;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Configuration::class, inversedBy="rectangleDim", cascade={"persist", "remove"})
-     */
-    private ?Configuration $configuration;
+    private float $width;
 
     public function __construct()
     {
@@ -42,6 +33,11 @@ class RectangleDim
         $this->width = null;
         $this->deep = null;
         $this->height = null;
+    }
+
+    public function getM2(): ?float
+    {
+        return math($this->height * $this->width);
     }
 
     public function getDeep(): ?string
@@ -76,18 +72,6 @@ class RectangleDim
     public function setWidth(string $width): self
     {
         $this->width = $width;
-
-        return $this;
-    }
-
-    public function getConfiguration(): ?Configuration
-    {
-        return $this->configuration;
-    }
-
-    public function setConfiguration(?Configuration $configuration): self
-    {
-        $this->configuration = $configuration;
 
         return $this;
     }

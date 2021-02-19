@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Services\Updater\AnimationUpdater;
 use App\Services\Updater\UserUpdater;
 
 class UpdaterDispatcher implements UpdaterDispatcherInterface
 {
-    private AnimationUpdater $animationUpdater;
     private UserUpdater $userUpdater;
 
     public function __construct(
-        AnimationUpdater $animationUpdater,
         UserUpdater $userUpdater
     ) {
-        $this->animationUpdater = $animationUpdater;
         $this->userUpdater = $userUpdater;
     }
 

@@ -34,13 +34,6 @@ security:
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
-        animations:
-            pattern: ^/api/animations
-            methods: [POST, PUT, PATCH, DELETE]
-            stateless: true
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
         main:
             anonymous: true
             lazy: true
@@ -57,4 +50,3 @@ security:
     access_control:
         - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY, methods: [PUT, PATCH, DELETE] }
         - { path: ^/api/custom, roles: IS_AUTHENTICATED_FULLY, methods: [GET, POST, PUT, PATCH, DELTE] }
-        - { path: ^/api/animations, roles: IS_AUTHENTICATED_FULLY, methods: [POST, PUT, PATCH, DELETE] }

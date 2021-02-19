@@ -6,47 +6,26 @@ namespace App\Entity;
 
 use App\Repository\CircularDimRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CircularDimRepository::class)
  */
-class CircularDim
+class CircularDim extends Dimension
 {
-    use ResourceId;
-    use Timestamps;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
+     * @Groups({"configurationWrite"})
      */
-    private ?string $deep;
+    private ?float $diameter;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private ?string $diameter;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Configuration::class, inversedBy="circularDim", cascade={"persist", "remove"})
-     */
-    private ?Configuration $configuration;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->deep = null;
         $this->diameter = null;
-    }
-
-    public function getDeep(): ?string
-    {
-        return $this->deep;
-    }
-
-    public function setDeep(string $deep): self
-    {
-        $this->deep = $deep;
-
-        return $this;
     }
 
     public function getDiameter(): ?string
@@ -61,15 +40,8 @@ class CircularDim
         return $this;
     }
 
-    public function getConfiguration(): ?Configuration
+    public function getM2(): ?float
     {
-        return $this->configuration;
-    }
-
-    public function setConfiguration(?Configuration $configuration): self
-    {
-        $this->configuration = $configuration;
-
-        return $this;
+        return math((($this->diameter / 2 )^2) * 3.14);
     }
 }
