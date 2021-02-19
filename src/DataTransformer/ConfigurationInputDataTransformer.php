@@ -18,21 +18,29 @@ final class ConfigurationInputDataTransformer implements DataTransformerInterfac
     {
         $newConfig = new Configuration();
 
-        if($data->dimension->diameter !== null)
+        var_dump($data->dimension);
+
+        if(isset($data->dimension->diameter))
         {
             $newDim = new CircularDim();
             $newDim->setConfig($newConfig);
+            $newDim->setDeep($data->dimension->getDeep());
             $newDim->setDiameter($data->dimension->diameter);
+
+            $newConfig->setDimension($newDim);
         }
-        elseif ($data->dimension->height !== null && $data->dimension->width !== null)
+        elseif (isset($data->dimension->heigh) && isset($data->dimension->width) )
         {
             $newDim = new RectangleDim();
             $newDim->setConfig($newConfig);
+            $newDim->setDeep($data->dimension->getDeep());
             $newDim->setHeight($data->dimension->height);
-            $newDim->setWidth($data->dimension->width !== null);
+            $newDim->setWidth($data->dimension->width);
+
+            $newConfig->setDimension($newDim);
         }
 
-        $newConfig->setDimension($newDim);
+
 
         return $newConfig;
     }

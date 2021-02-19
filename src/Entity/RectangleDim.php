@@ -30,9 +30,6 @@ class RectangleDim extends Dimension
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->configuration = null;
-        $this->width = null;
-        $this->deep = null;
-        $this->height = null;
     }
 
     public function getM2(): ?float
@@ -40,36 +37,24 @@ class RectangleDim extends Dimension
         return math($this->height * $this->width);
     }
 
-    public function getDeep(): ?string
-    {
-        return $this->deep;
-    }
-
-    public function setDeep(string $deep): self
-    {
-        $this->deep = $deep;
-
-        return $this;
-    }
-
-    public function getHeight(): ?string
+    public function getHeight(): ?float
     {
         return $this->height;
     }
 
-    public function setHeight(string $height): self
+    public function setHeight(float $height): self
     {
         $this->height = $height;
 
         return $this;
     }
 
-    public function getWidth(): ?string
+    public function getWidth(): ?float
     {
         return $this->width;
     }
 
-    public function setWidth(string $width): self
+    public function setWidth(float $width): self
     {
         $this->width = $width;
 

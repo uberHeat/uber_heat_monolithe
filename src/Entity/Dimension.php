@@ -30,19 +30,17 @@ class Dimension
      */
     private float $deep;
 
-
-    public function getDeep(): ?string
+    public function getDeep(): ?float
     {
         return $this->deep;
     }
 
-    public function setDeep(string $deep): self
+    public function setDeep(float $deep): self
     {
         $this->deep = $deep;
 
         return $this;
     }
-
 
     public function getConfig(): ?Configuration
     {

@@ -23,17 +23,16 @@ class CircularDim extends Dimension
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
-        $this->deep = null;
+        parent::__construct()
         $this->diameter = null;
     }
 
-    public function getDiameter(): ?string
+    public function getDiameter(): ?float
     {
         return $this->diameter;
     }
 
-    public function setDiameter(string $diameter): self
+    public function setDiameter(float $diameter): self
     {
         $this->diameter = $diameter;
 
