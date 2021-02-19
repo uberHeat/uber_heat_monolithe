@@ -42,6 +42,11 @@ class Configuration
      */
     public ?RectangleDim $rectangleDim;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="configurations")
+     */
+    private Type $type;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -106,6 +111,18 @@ class Configuration
         }
 
         $this->rectangleDim = $rectangleDim;
+
+        return $this;
+    }
+
+    public function getType(): ?Type
+    {
+        return $this->type;
+    }
+
+    public function setType(?Type $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
