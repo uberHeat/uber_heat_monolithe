@@ -11,4 +11,6 @@ final class ConfigurationInput
      * @Groups({"configurationWrite"})
      */
     public ?Dimension $dimension = null;
+
+
 }

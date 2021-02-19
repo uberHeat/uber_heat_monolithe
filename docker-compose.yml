@@ -10,6 +10,13 @@ services:
     ports:
       - '8081:80'
 
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
   # PHP-FPM service
   php:
     build:

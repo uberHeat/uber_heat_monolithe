@@ -13,22 +13,27 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"circle" = "CircularDim", "rectangle" = "RectangleDim"})
  */
-class Dimension
+abstract class Dimension
 {
     use ResourceId;
-    use Timestamps;
 
     /**
      * @ORM\OneToOne(targetEntity="Configuration", inversedBy="dimension")
      * @ORM\JoinColumn(name="config_id", referencedColumnName="id")
      */
-    private Configuration $config;
+    protected ?Configuration $config;
 
     /**
      * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      * @Groups({"configurationWrite"})
      */
-    private float $deep;
+    protected ?float $deep;
+
+    public function __construct(){
+        $this->createdAt = new \DateTimeImmutable();
+        $this->config = null;
+        $this->deep = null;
+    }
 
     public function getDeep(): ?float
     {

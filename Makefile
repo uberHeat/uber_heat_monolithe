@@ -14,5 +14,9 @@ php:
 		docker-compose exec php /bin/bash
 
 .PHONY:
+mysql:
+		docker-compose exec mysql mysql
+
+.PHONY:
 stop:
 		docker-compose stop

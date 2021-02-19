@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\CircularDimRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource
  * @ORM\Entity(repositoryClass=CircularDimRepository::class)
  */
 class CircularDim extends Dimension
@@ -20,11 +22,10 @@ class CircularDim extends Dimension
      */
     private ?float $diameter;
 
-
     public function __construct()
     {
-        parent::__construct()
         $this->diameter = null;
+        $this->deep = null;
     }
 
     public function getDiameter(): ?float
@@ -39,8 +40,8 @@ class CircularDim extends Dimension
         return $this;
     }
 
-    public function getM2(): ?float
+    public function calculM2(): ?float
     {
-        return math((($this->diameter / 2 )^2) * 3.14);
+        return ((($this->diameter / 2 )^2) * 3.14);
     }
 }

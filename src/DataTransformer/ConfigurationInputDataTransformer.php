@@ -17,30 +17,8 @@ final class ConfigurationInputDataTransformer implements DataTransformerInterfac
     public function transform($data, string $to, array $context = [])
     {
         $newConfig = new Configuration();
-
-        var_dump($data->dimension);
-
-        if(isset($data->dimension->diameter))
-        {
-            $newDim = new CircularDim();
-            $newDim->setConfig($newConfig);
-            $newDim->setDeep($data->dimension->getDeep());
-            $newDim->setDiameter($data->dimension->diameter);
-
-            $newConfig->setDimension($newDim);
-        }
-        elseif (isset($data->dimension->heigh) && isset($data->dimension->width) )
-        {
-            $newDim = new RectangleDim();
-            $newDim->setConfig($newConfig);
-            $newDim->setDeep($data->dimension->getDeep());
-            $newDim->setHeight($data->dimension->height);
-            $newDim->setWidth($data->dimension->width);
-
-            $newConfig->setDimension($newDim);
-        }
-
-
+        $data->dimension->setConfig($newConfig);
+        $newConfig->setDimension($data->dimension);
 
         return $newConfig;
     }

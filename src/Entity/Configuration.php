@@ -35,16 +35,15 @@ class Configuration
     private ?Product $product;
 
     /**
-     * @ORM\OneToOne(targetEntity="Dimension", mappedBy="config")
+     * @ORM\OneToOne(targetEntity="Dimension", mappedBy="config", cascade={"persist","remove"})
      * @Groups({"configurationWrite"})
      */
-    private Dimension $dimension;
+    private ?Dimension $dimension;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->rectangleDim = new RectangleDim();
-        $this->circularDim = new CircularDim();
+        $this->dimension = null;
     }
 
     public function getId(): ?int
@@ -69,7 +68,7 @@ class Configuration
         return $this->dimension;
     }
 
-    public function setDimension(?Dimension $dimension): self
+    public function setDimension(Dimension $dimension): self
     {
         $this->dimension = $dimension;
 

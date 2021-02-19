@@ -38,6 +38,9 @@ services:
         arguments: [ '@App\Swagger\SwaggerDecorator.inner' ]
         autoconfigure: false
 
+    App\Serializer\DimensionDenormalizer:
+       arguments: ['@api_platform.serializer.normalizer.item']
+
     agenda.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener
         tags:
