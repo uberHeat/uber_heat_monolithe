@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\EntityManager;
 
 use App\Tests\EntityManager\User\UserManager;

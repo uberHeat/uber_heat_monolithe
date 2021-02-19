@@ -14,12 +14,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ResourceUpdaterSubscriber implements EventSubscriberInterface
 {
     private ResourceUpdaterInterface $resourceUpdater;
-    private UpdaterDispatcherInterface $updaterDispatcher;
 
-    public function __construct(ResourceUpdaterInterface $resourceUpdater, UpdaterDispatcherInterface $updaterDispatcher)
+    public function __construct(ResourceUpdaterInterface $resourceUpdater)
     {
         $this->resourceUpdater = $resourceUpdater;
-        $this->updaterDispatcher = $updaterDispatcher;
     }
 
     public static function getSubscribedEvents()
@@ -36,8 +34,6 @@ class ResourceUpdaterSubscriber implements EventSubscriberInterface
         $isAnUpdate = $this->resourceUpdater->isAnUpdate($event->getRequest()->getMethod());
 
         if ($isAnUpdate) {
-            $this->updaterDispatcher->dispatch($object);
-
             $object->setUpdatedAt(new \DateTimeImmutable());
         }
     }

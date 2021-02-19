@@ -11,7 +11,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=RectangleDimRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *      collectionOperations={},
+ *      itemOperations={},
+ * )
  */
 class RectangleDim extends Dimension
 {

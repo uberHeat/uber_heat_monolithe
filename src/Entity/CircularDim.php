@@ -10,8 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource
  * @ORM\Entity(repositoryClass=CircularDimRepository::class)
+ * @ApiResource(
+ *      collectionOperations={},
+ *      itemOperations={},
+ * )
  */
 class CircularDim extends Dimension
 {

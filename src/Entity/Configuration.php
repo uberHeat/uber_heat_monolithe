@@ -6,17 +6,18 @@ namespace App\Entity;
 
 use App\Repository\ConfigurationRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Dto\ConfigurationInput;
-use App\Dto\ConfigurationOutput;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
  * @ApiResource(
  *     collectionOperations={
- *         "create"={
+ *     "get",
+ *     "create"={
  *             "method"="POST",
  *             "input"=ConfigurationInput::class,
  *             "denormalization_context"={"groups"={"configurationWrite"}}
